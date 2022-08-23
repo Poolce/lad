@@ -1,7 +1,7 @@
-const hapi = require("@hapi/hapi");
-const filepaths = require("filepaths");
-const boomDec = require("hapi-boom-decorators");
+
+const { server } = require('@hapi/hapi');
+const createServer = require('./src/server');
+var fetch = require('node-fetch');
 
 
-
-
+createServer();

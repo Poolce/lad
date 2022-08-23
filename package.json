@@ -1,0 +1,17 @@
+{
+  "name": "lad",
+  "version": "1.0.0",
+  "description": "Test exercise for lab",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@hapi/boom": "^10.0.0",
+    "@hapi/hapi": "^20.2.2",
+    "filepaths": "^0.3.0",
+    "hapi-boom-decorators": "^4.1.2"
+  }
+}

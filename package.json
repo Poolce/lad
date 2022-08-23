@@ -4,7 +4,8 @@
   "description": "Test exercise for lab",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon"
   },
   "author": "",
   "license": "ISC",
@@ -12,6 +13,7 @@
     "@hapi/boom": "^10.0.0",
     "@hapi/hapi": "^20.2.2",
     "filepaths": "^0.3.0",
-    "hapi-boom-decorators": "^4.1.2"
+    "hapi-boom-decorators": "^4.1.2",
+    "nodemon": "^2.0.19"
   }
 }

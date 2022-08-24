@@ -1,9 +1,11 @@
-const etch = require('node-fetch');
-
 async function response() {
-    // content-type будет автоматически генерироваться в зависимости оттого какой тип данных  в ответе
+  const fetch = (...args) => import('node-fetch').then(({default: fetch}) => fetch(...args));
+  // content-type будет автоматически генерироваться в зависимости оттого какой тип данных  в ответе
     
-    return fetch("https://hibrain.ru/news/materiali-dlya-podgotovki-k-backend-stazhirovke-");
+    let vd = await fetch('https://api.github.com/');
+    console.log(''+vd.text());
+    vr = vd.json();
+    return ''+vr.hub_url;
   }
   
   module.exports = {

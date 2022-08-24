@@ -13,7 +13,7 @@ async function createServer() {
   ]);
 
   // Загружаем все руты из папки ./src/routes/
-  let routes = filepaths.getSync('D:\\repos\\lad\\src\\routes\\home.js');
+  let routes = filepaths.getSync(__dirname+'\\routes\\home.js');
   for(let route of routes)
     server.route( require(route) );
   

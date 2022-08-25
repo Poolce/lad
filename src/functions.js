@@ -1,6 +1,9 @@
 const {convert} = require('html-to-text');
 var needle = require('needle');
 const { format } = require('url');
+const pdf = require('jspdf');
+
+
 
 module.exports = {
     getText:getText,

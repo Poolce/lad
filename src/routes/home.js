@@ -1,12 +1,14 @@
 const funs = require('../functions.js');
 
-
 async function response() {
   var url = 'https://habr.com/ru/post/684684/';
 
 
   a = await funs.getText(url);
   a = await funs.getRateOfWords(a,4);
+
+  funs.addToPDF(url,a);
+
   return a;
   }
   

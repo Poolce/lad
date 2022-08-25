@@ -1,15 +1,42 @@
 const {convert} = require('html-to-text');
 var needle = require('needle');
 const { format } = require('url');
-const pdf = require('jspdf');
-
-
-
+const fs = require('fs');
+let { PDFDocument, StandardFonts, rgb } = require('pdf-lib');
+///Pdfmake
 module.exports = {
     getText:getText,
-    getRateOfWords: getRateOfWords    
+    getRateOfWords: getRateOfWords,
+    addToPDF: addToPDF 
 }
 
+
+async function addToPDF(url,arr)
+{
+    const pdfDoc = await PDFDocument.create()
+
+// Embed the Times Roman font
+const timesRomanFont = await pdfDoc.embedFont(StandardFonts.TimesRoman)
+
+// Add a blank page to the document
+const page = pdfDoc.addPage()
+
+// Get the width and height of the page
+const { width, height } = page.getSize()
+
+// Draw a string of text toward the top of the page
+const fontSize = 30
+page.drawText('Creating PDFs in JavaScript is awesome!', {
+  x: 50,
+  y: height - 4 * fontSize,
+  size: fontSize,
+  font: timesRomanFont,
+  color: rgb(0, 0.53, 0.71),
+})
+
+// Serialize the PDFDocument to bytes (a Uint8Array)
+const pdfBytes = await pdfDoc.save()
+}
 
 
 async function sizeWords(arr,minSize)
@@ -36,7 +63,7 @@ async function getText(url)
 
     text = await text.replace(/[^ а-яё]/gi, '');//выбирает только русские слова
 
-    text= await text.toUpperCase();//Большими буквами
+    text= await text.toLowerCase();//Большими буквами
 
     var wordsArr = await text.split(' ').filter(function(i){return i})//Разбивает слова в массив
 

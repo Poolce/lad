@@ -5,6 +5,8 @@ const Hapi = require('@hapi/hapi');
 const { output } = require('pdfkit');
 
 
+
+
 async function response() {
   var url = 'https://stackoverflow.com/questions/9168737/read-a-text-file-using-node-js'
 
@@ -12,13 +14,9 @@ async function response() {
   a = await funs.getText(url);
   a = await funs.getRateOfWords(a,4);
 
-  let res = new PDFDocument;
-  res = await funs.addToPDF(url,a);
-
-  res.info['Title'] = 'TestDocument';
-  console.log(res.info);
+  await funs.addToPDF(url,a);
   
-  return 'f';
+  return 'ok!';
   }
   
   module.exports = {
@@ -27,4 +25,5 @@ async function response() {
     options: { 
       handler: response,
     }
+    
   };

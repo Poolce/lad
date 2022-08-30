@@ -5,7 +5,6 @@ const fs = require('fs');
 const PDFDocument = require('pdfkit');
 
 
-///Pdfmake
 module.exports = {
     getText:getText,
     getRateOfWords: getRateOfWords,
@@ -16,22 +15,20 @@ module.exports = {
 async function addToPDF(url,arr)
 {
   let pdfDoc = new PDFDocument;
-  pdfDoc.name = 'doc.pdf';
 
-  pdfDoc.info['Title'] = 'TestDocument.pdf';
+  pdfDoc.pipe(fs.createWriteStream('SampleDocument.pdf'));
   pdfDoc.registerFont('Spectral', 'Spectral.ttf');
   let resText ='';
   for(i=0;i<arr.length;i++)
   {
-    resText+=' | '+ arr[i][1] +' встречается '+ arr[i][0]+'раз | ';
+    resText+='| '+ arr[i][1] +' встречается '+ arr[i][0]+'раз | \n';
   }
 
-  pdfDoc.font('Spectral').fontSize(10).fillColor('red').text(url+'  |'+resText);
+  pdfDoc.font('Spectral').fontSize(10).fillColor('red').text(url+'\n'+resText);
 
 
 
 pdfDoc.end();
-return pdfDoc;
 }
 
 
@@ -52,8 +49,6 @@ async function sizeWords(arr,minSize)
 async function getText(url)
 {
     let htmlText = await needle('get', url); //Получение html текста страницы
-
-    //console.log(htmlText);
 
     let text = await convert(htmlText.body, { wordwrap: null });//преобразовывает html в слова
 

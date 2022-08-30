@@ -2,7 +2,9 @@ const {convert} = require('html-to-text');
 var needle = require('needle');
 const { format } = require('url');
 const fs = require('fs');
-let { PDFDocument, StandardFonts, rgb } = require('pdf-lib');
+const PDFDocument = require('pdfkit');
+
+
 ///Pdfmake
 module.exports = {
     getText:getText,
@@ -13,29 +15,23 @@ module.exports = {
 
 async function addToPDF(url,arr)
 {
-    const pdfDoc = await PDFDocument.create()
+  let pdfDoc = new PDFDocument;
+  pdfDoc.name = 'doc.pdf';
 
-// Embed the Times Roman font
-const timesRomanFont = await pdfDoc.embedFont(StandardFonts.TimesRoman)
+  pdfDoc.info['Title'] = 'TestDocument.pdf';
+  pdfDoc.registerFont('Spectral', 'Spectral.ttf');
+  let resText ='';
+  for(i=0;i<arr.length;i++)
+  {
+    resText+=' | '+ arr[i][1] +' встречается '+ arr[i][0]+'раз | ';
+  }
 
-// Add a blank page to the document
-const page = pdfDoc.addPage()
+  pdfDoc.font('Spectral').fontSize(10).fillColor('red').text(url+'  |'+resText);
 
-// Get the width and height of the page
-const { width, height } = page.getSize()
 
-// Draw a string of text toward the top of the page
-const fontSize = 30
-page.drawText('Creating PDFs in JavaScript is awesome!', {
-  x: 50,
-  y: height - 4 * fontSize,
-  size: fontSize,
-  font: timesRomanFont,
-  color: rgb(0, 0.53, 0.71),
-})
 
-// Serialize the PDFDocument to bytes (a Uint8Array)
-const pdfBytes = await pdfDoc.save()
+pdfDoc.end();
+return pdfDoc;
 }
 
 
@@ -57,13 +53,13 @@ async function getText(url)
 {
     let htmlText = await needle('get', url); //Получение html текста страницы
 
-    console.log(htmlText);
+    //console.log(htmlText);
 
     let text = await convert(htmlText.body, { wordwrap: null });//преобразовывает html в слова
 
-    text = await text.replace(/[^ а-яё]/gi, '');//выбирает только русские слова
+    text = await text.replace(/[^\\da-zA-Zа-яёА-ЯЁ ]/g, '');//выбирает только слова
 
-    text= await text.toLowerCase();//Большими буквами
+    text= await text.toUpperCase();//Большими буквами
 
     var wordsArr = await text.split(' ').filter(function(i){return i})//Разбивает слова в массив
 

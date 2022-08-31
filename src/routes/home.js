@@ -1,36 +1,27 @@
 const funs = require('../functions.js');
-const PDFDocument = require('pdfkit');
 const { handler } = require('@hapi/hapi/lib/cors.js');
 const Hapi = require('@hapi/hapi');
-const { output } = require('pdfkit');
-const fs = require('fs');
+
 
 
 async function response(req, h) {
-
   let url = 
-[
-  'https://stackoverflow.com/questions/9168737/read-a-text-file-using-node-js',
-]
-pdfDoc = new PDFDocument;
-let l = await pdfDoc.pipe(fs.createWriteStream('SampleDocument.pdf'));
-l = await pdfDoc.registerFont('Spectral', 'Spectral.ttf');
-
-k = await funs.getResult(url,pdfDoc);
-
-k = await pdfDoc.end();
-
-  // a = await funs.getText(url);
-  // a = await funs.getRateOfWords(a,4);
-
-  // k = await funs.getResult(url);
-  // s = await k;
-  return h.response(pdfDoc)
-  .header('Content-Type', 'application/pdf')
-  .header('Content-Disposition', 'attachment; filename= ' + 'file.pdf');
+  [
+    'https://stackoverflow.com/questions/9168737/read-a-text-file-using-node-js',
+    'https://learn.javascript.ru/promise?ysclid=l7hrjy152a262632226',
+    'https://habr.com/ru/post/435084/?ysclid=l7hshp9oz1328557447',
+    'https://infostart.ru/1c/articles/812886/?ysclid=l7hnxl4a6l651953880'
+  ];
 
 
-  }
+  let result = await funs.getResult(url);
+
+
+  return h.response(result)
+    .header('Content-Type', 'application/pdf')
+    .header('Content-Disposition', 'attachment; filename= ' + 'file.pdf');
+
+}
   
   module.exports = {
     method: 'GET', // Метод

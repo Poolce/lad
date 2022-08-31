@@ -5,20 +5,19 @@ const fs = require('fs');
 const PDFDocument = require('pdfkit');
 
 
-module.exports = {
-    getText:getText,
-    getRateOfWords: getRateOfWords,
-    addToPDF: addToPDF,
+module.exports = 
+{
     getResult: getResult
 }
 
-
-async function getResult(arr_urls,pdfDoc)
+async function getResult(arr_urls)
 {
+  pdfDoc = new PDFDocument;
+
+  let fontFamily = await pdfDoc.registerFont('Spectral', 'Spectral.ttf');
 
   for(const url of arr_urls)
   {
-
     let words = await getText(url);
 
     let topWords = await getRateOfWords(words,4);
@@ -27,36 +26,15 @@ async function getResult(arr_urls,pdfDoc)
 
      for(const word of topWords)
      {
-       console.log(word);
        writing = await pdfDoc.font('Spectral').fontSize(10).fillColor('blue').text('|'+word[1]+'|\n');
      }
   }
 
- console.log('good');
+  k = await pdfDoc.end();
+
+  return pdfDoc;
 }
 
-
-
-
-async function addToPDF(url,arr)
-{
-  let pdfDoc = new PDFDocument;
-
-  //pdfDoc.pipe(fs.createWriteStream('SampleDocument.pdf'));
-  pdfDoc.registerFont('Spectral', 'Spectral.ttf');
-  let resText ='';
-  for(i=0;i<arr.length;i++)
-  {
-    resText+='| '+ arr[i][1] +' встречается '+ arr[i][0]+'раз | \n';
-  }
-
-  pdfDoc.font('Spectral').fontSize(10).fillColor('red').text(url+'\n'+resText);
-
-
-
-pdfDoc.end();
-return pdfDoc;
-}
 
 
 async function sizeWords(arr,minSize)

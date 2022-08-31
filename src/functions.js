@@ -8,15 +8,41 @@ const PDFDocument = require('pdfkit');
 module.exports = {
     getText:getText,
     getRateOfWords: getRateOfWords,
-    addToPDF: addToPDF 
+    addToPDF: addToPDF,
+    getResult: getResult
 }
+
+
+async function getResult(arr_urls,pdfDoc)
+{
+
+  for(const url of arr_urls)
+  {
+
+    let words = await getText(url);
+
+    let topWords = await getRateOfWords(words,4);
+
+    let wtiting = await pdfDoc.font('Spectral').fontSize(10).fillColor('red').text(url+'\n\n');
+
+     for(const word of topWords)
+     {
+       console.log(word);
+       writing = await pdfDoc.font('Spectral').fontSize(10).fillColor('blue').text('|'+word[1]+'|\n');
+     }
+  }
+
+ console.log('good');
+}
+
+
 
 
 async function addToPDF(url,arr)
 {
   let pdfDoc = new PDFDocument;
 
-  pdfDoc.pipe(fs.createWriteStream('SampleDocument.pdf'));
+  //pdfDoc.pipe(fs.createWriteStream('SampleDocument.pdf'));
   pdfDoc.registerFont('Spectral', 'Spectral.ttf');
   let resText ='';
   for(i=0;i<arr.length;i++)
@@ -29,6 +55,7 @@ async function addToPDF(url,arr)
 
 
 pdfDoc.end();
+return pdfDoc;
 }
 
 
